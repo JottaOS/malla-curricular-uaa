@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "dev": "nodemon src/app.ts",
-    "build": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
