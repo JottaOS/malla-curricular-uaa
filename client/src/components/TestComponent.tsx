@@ -10,8 +10,6 @@ const TestComponent = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log(`Backend url: ${BASE_URL}`);
-
       const listResponse = await fetch(`${BASE_URL}/facultades`);
       const list = await listResponse.json();
 
