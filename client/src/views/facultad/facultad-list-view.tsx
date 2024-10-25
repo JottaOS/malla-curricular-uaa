@@ -13,8 +13,8 @@ const FacultadListView = () => {
   }
 
   return (
-    <section className="p-8 flex flex-col space-y-1.5">
-      <h1 className="text-3xl font-bold">Facultades</h1>
+    <section className="p-8 flex flex-col ">
+      <h1 className="text-3xl font-bold mb-8">Facultades</h1>
       <DataTable columns={columns} data={facultades} />
     </section>
   );

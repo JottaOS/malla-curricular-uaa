@@ -19,6 +19,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CSSProperties, useState } from "react";
+import { Input } from "./input";
+import { Search } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,21 +36,35 @@ export function DataTable<TData, TValue>({
   className,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = useState<Array<unknown>>([]);
 
   const table = useReactTable({
     data,
     columns,
+    enableSorting: true,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    globalFilterFn: "includesString",
+    onGlobalFilterChange: setGlobalFilter,
     state: {
       sorting,
+      globalFilter,
     },
   });
 
   return (
     <div className={`rounded-md border ${className}`}>
+      <div className="p-4">
+        <Input
+          className="w-64"
+          value={table.getState().globalFilter}
+          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+          placeholder="Buscar..."
+          startIcon={Search}
+        />
+      </div>
       <Table className={`table-auto ${className}`}>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
