@@ -1,3 +1,4 @@
+"use client";
 import { BookText, GraduationCap, Library, University } from "lucide-react";
 
 import {
@@ -13,6 +14,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "./theme-toggler";
+import { usePathname } from "next/navigation";
 
 const items = [
   {
@@ -38,6 +40,8 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const pathname = usePathname();
+
   return (
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader></SidebarHeader>
@@ -48,7 +52,12 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton
+                    asChild
+                    className={`${
+                      pathname.includes(item.url) ? "text-primary" : ""
+                    }`}
+                  >
                     <a href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>

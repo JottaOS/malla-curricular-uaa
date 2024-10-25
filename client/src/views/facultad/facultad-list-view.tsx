@@ -4,8 +4,11 @@ import { DataTable } from "@/components/ui/data-table";
 import useFacultades from "@/services/hooks/useFacultades";
 import React from "react";
 import { columns } from "./columns";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 const FacultadListView = () => {
+  const router = useRouter();
   const { facultades, loading } = useFacultades();
 
   if (loading) {
@@ -16,6 +19,7 @@ const FacultadListView = () => {
     <section className="p-8 flex flex-col ">
       <h1 className="text-3xl font-bold mb-8">Facultades</h1>
       <DataTable columns={columns} data={facultades} />
+      <Button onClick={() => router.push("/facultades/crear")}>+ Crear</Button>
     </section>
   );
 };

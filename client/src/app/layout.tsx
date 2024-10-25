@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "@/providers";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { Toaster } from "sonner";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,6 +40,7 @@ export default function RootLayout({
             {children}
           </main>
         </Providers>
+        <Toaster richColors />
       </body>
     </html>
   );
