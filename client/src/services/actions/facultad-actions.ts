@@ -1,5 +1,7 @@
+"use server";
 import { SERVER } from "@/lib/constants";
 import { Facultad } from "@/types/facultad";
+import { revalidatePath } from "next/cache";
 
 export const createFacultad = async (facultad: Facultad) => {
   const response = await fetch(`${SERVER}/facultades`, {
@@ -19,12 +21,14 @@ export const updateFacultad = async (facultad: Facultad) => {
 
   const response = await fetch(`${SERVER}/facultades/${facultad.id}`, {
     body: JSON.stringify(facultad),
-    method: "PUT",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
   });
   const json = await response.json();
+
+  revalidatePath("/facultades");
 
   return json;
 };
@@ -36,7 +40,7 @@ export const deleteFacultad = async (id: number) => {
     method: "DELETE",
   });
 
-  const json = await response.json();
-
-  return json;
+  if (response.status === 404) {
+    throw new Error("Facultad no encontrada");
+  }
 };

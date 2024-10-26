@@ -18,14 +18,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { Input } from "./input";
-import { Search } from "lucide-react";
+import { Plus, RefreshCcw, Search } from "lucide-react";
+import { Button } from "./button";
+import { Skeleton } from "./skeleton";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   className?: string;
+  onCreate?: () => void;
+  onRefresh?: () => void;
+  isLoading?: boolean;
+}
+
+declare module "@tanstack/table-core" {
+  // @ts-expect-error El error no afecta en nada
+  // eslint-disable-next-line
+  interface TableMeta<TData extends RowData> {
+    removeRow: (rowIndex: number) => void;
+  }
 }
 
 const DEFAULT_COLUMN_WIDTH = 150;
@@ -34,12 +47,20 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   className,
+  onCreate,
+  onRefresh,
+  isLoading = false,
 }: DataTableProps<TData, TValue>) {
+  const [tableData, setTableData] = useState(data);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState<Array<unknown>>([]);
 
+  useEffect(() => {
+    setTableData(data);
+  }, [data]);
+
   const table = useReactTable({
-    data,
+    data: tableData,
     columns,
     enableSorting: true,
     getCoreRowModel: getCoreRowModel(),
@@ -52,18 +73,34 @@ export function DataTable<TData, TValue>({
       sorting,
       globalFilter,
     },
+    meta: {
+      removeRow: (rowIndex: number) => {
+        setTableData((oldData) =>
+          oldData.filter((_row, index) => index !== rowIndex)
+        );
+      },
+    },
   });
 
   return (
     <div className={`rounded-md border ${className}`}>
-      <div className="p-4">
-        <Input
-          className="w-64"
-          value={table.getState().globalFilter}
-          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-          placeholder="Buscar..."
-          startIcon={Search}
-        />
+      <div className="p-4 flex justify-between items-center">
+        <Button onClick={onCreate}>
+          <Plus size={8} /> Crear
+        </Button>
+        <div className="flex gap-4">
+          <Button variant={"secondary"} onClick={onRefresh}>
+            <RefreshCcw size={8} />
+          </Button>
+
+          <Input
+            className="w-64"
+            value={table.getState().globalFilter}
+            onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+            placeholder="Buscar..."
+            startIcon={Search}
+          />
+        </div>
       </div>
       <Table className={`table-auto ${className}`}>
         <TableHeader>
@@ -89,8 +126,19 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
+
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {isLoading ? (
+            Array.from({ length: 5 }).map((_, index) => (
+              <TableRow key={index}>
+                {columns.map((_, colIndex) => (
+                  <TableCell key={colIndex}>
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}

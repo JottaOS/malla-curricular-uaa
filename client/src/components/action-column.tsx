@@ -17,7 +17,7 @@ interface ActionColumnProps {
 const ActionColumn = ({ onDelete, onEdit }: ActionColumnProps) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger asChild>
         <Button variant={"ghost"} className="h-8 w-8 p-0">
           <MoreHorizontal className="h-4 w-4" />
         </Button>

@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 
 export interface FacultadFormProps {
   defaultValues: Facultad;
-  onSubmit: (formData: Facultad) => void;
+  onSubmit: (formData: Facultad, reset?: () => void) => void;
   isSubmitting: boolean;
 }
 
@@ -31,7 +31,7 @@ const FacultadForm = ({
     defaultValues,
   });
 
-  const { control, handleSubmit } = form;
+  const { control, handleSubmit, reset } = form;
 
   return (
     <div className="grid gap-8">
@@ -39,7 +39,7 @@ const FacultadForm = ({
         <form
           id="facultadForm"
           className="grid gap-4"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit((data) => onSubmit(data, reset))}
         >
           <FormField
             control={control}
