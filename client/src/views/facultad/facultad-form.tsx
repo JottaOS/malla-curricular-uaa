@@ -61,7 +61,7 @@ const FacultadForm = ({
               <FormItem>
                 <FormLabel>Siglas</FormLabel>
                 <FormControl>
-                  <Input autoFocus {...field} />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

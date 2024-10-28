@@ -80,23 +80,22 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className={`rounded-md border ${className}`}>
-      <div className="p-4 flex justify-between items-center">
-        <Button onClick={onCreate}>
-          <Plus size={8} /> Crear
-        </Button>
-        <div className="flex gap-4">
+      <div className="p-4 flex justify-between items-center gap-2">
+        <div className="flex gap-2 lg:gap-4">
+          <Button onClick={onCreate}>
+            <Plus size={8} /> <span className="hidden lg:inline">Crear</span>
+          </Button>
           <Button variant={"secondary"} onClick={onRefresh}>
             <RefreshCcw size={8} />
           </Button>
-
-          <Input
-            className="w-64"
-            value={table.getState().globalFilter}
-            onChange={(e) => table.setGlobalFilter(String(e.target.value))}
-            placeholder="Buscar..."
-            startIcon={Search}
-          />
         </div>
+        <Input
+          className="w-full lg:w-72"
+          value={table.getState().globalFilter}
+          onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+          placeholder="Buscar..."
+          startIcon={Search}
+        />
       </div>
       <Table className={`table-auto ${className}`}>
         <TableHeader>
