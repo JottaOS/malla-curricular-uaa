@@ -16,7 +16,7 @@ const useFacultad = ({ id }: { id: number }) => {
         setFacultad(data);
       } catch (err) {
         console.log(err);
-        setError(err);
+        setError(String(err));
       } finally {
         setLoading(false);
       }
