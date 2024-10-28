@@ -54,14 +54,12 @@ export const sendNotFoundResponse = <T>(
 export const sendValidationError = <T>(
   res: Response,
   message: T,
-  errors: any[],
   status = HttpStatusCode.BAD_REQUEST
 ): Response<ErrorResponse<T>> => {
   return res.status(status).json({
     success: false,
     error: {
-      message: message,
-      errors: errors,
+      message,
     },
   });
 };

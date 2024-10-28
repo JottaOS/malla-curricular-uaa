@@ -21,7 +21,7 @@ const handleDelete = async (table: Table<any>, id: number) => {
 export const columns: ColumnDef<Facultad>[] = [
   {
     accessorKey: "id",
-    header: "#",
+    header: "ID",
   },
   {
     accessorKey: "nombre",

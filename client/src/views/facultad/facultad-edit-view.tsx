@@ -18,22 +18,19 @@ const FacultadEditView = ({ id }: { id: number }) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const router = useRouter();
 
-  // TODO: implementar manejo de errores
   const onSubmit = async (formData: Facultad) => {
     setIsSubmitting(true);
-    console.log(formData);
     try {
       const data = await updateFacultad(formData);
-      console.log(`Data: ${JSON.stringify(data)}`);
       if (data.success) {
         toast.success("Facultad actualizada con éxito");
         router.push("/facultades");
       } else {
-        toast.error("Ha ocurrido un error al actualizar la facultad");
+        toast.error(data.error.message);
       }
     } catch (err) {
-      console.log(err);
-      toast.error(JSON.stringify(err));
+      console.error(err);
+      toast.error("Ha ocurrido un error inesperado");
     } finally {
       setIsSubmitting(false);
     }

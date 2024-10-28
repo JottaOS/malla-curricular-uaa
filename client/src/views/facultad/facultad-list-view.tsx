@@ -10,10 +10,6 @@ const FacultadListView = () => {
   const router = useRouter();
   const { facultades, loading, refetch } = useFacultades();
 
-  // if (loading) {
-  //   return <div className="animation-bounce">Cargando...</div>;
-  // }
-
   return (
     <section className="p-8 flex flex-col ">
       <h1 className="text-3xl font-bold mb-8">Facultades</h1>

@@ -13,18 +13,15 @@ const defaultValues: Facultad = {
 const FacultadCreateView = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  // TODO: implementar manejo de errores
-  const onSubmit = async (formData: Facultad, reset?: () => void) => {
+  const onSubmit = async (formData: Facultad, resetForm?: () => void) => {
     setIsSubmitting(true);
-    console.log(formData);
     try {
       const data = await createFacultad(formData);
-      console.log(`Data: ${JSON.stringify(data)}`);
       if (data.success) {
         toast.success("Facultad creada con éxito");
-        reset?.();
+        resetForm?.();
       } else {
-        toast.error("Ha ocurrido un error al crear la facultad");
+        toast.error(data.error.message);
       }
     } catch (err) {
       toast.error(JSON.stringify(err));

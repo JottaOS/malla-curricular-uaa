@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useState } from "react";
 import { Input } from "./input";
 import { Plus, RefreshCcw, Search } from "lucide-react";
 import { Button } from "./button";
@@ -51,16 +51,11 @@ export function DataTable<TData, TValue>({
   onRefresh,
   isLoading = false,
 }: DataTableProps<TData, TValue>) {
-  const [tableData, setTableData] = useState(data);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState<Array<unknown>>([]);
 
-  useEffect(() => {
-    setTableData(data);
-  }, [data]);
-
   const table = useReactTable({
-    data: tableData,
+    data,
     columns,
     enableSorting: true,
     getCoreRowModel: getCoreRowModel(),
@@ -75,9 +70,10 @@ export function DataTable<TData, TValue>({
     },
     meta: {
       removeRow: (rowIndex: number) => {
-        setTableData((oldData) =>
-          oldData.filter((_row, index) => index !== rowIndex)
-        );
+        // todo: implementar esta función para no tener que hacer refetch
+        // luego de borrar.
+        onRefresh?.();
+        console.debug(rowIndex);
       },
     },
   });

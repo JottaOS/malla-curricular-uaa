@@ -4,6 +4,14 @@ import {
   sendErrorResponse,
   sendValidationError,
 } from "../utils/responseHandler";
+import { PgErrorCode } from "../utils/pgErrorCode";
+import HttpStatusCode from "../utils/httpStatusCode";
+
+// los genios de node-pg no crearon una instancia específica para diferenciar sus errores
+// de otras excepciones de node. Le pusieron unos cuantos atributos and they called it a day
+const isPgError = (error: any): boolean => {
+  return error && error.code && error.severity;
+};
 
 export const errorHandler = (
   error: any,
@@ -16,17 +24,37 @@ export const errorHandler = (
 
   // Handle Zod validation errors
   if (error instanceof z.ZodError) {
-    const errors = error.errors.map((err) => ({
-      attribute: err.path[0],
-      message: err.message,
-    }));
-    sendValidationError(response, "Validation Error", errors);
+    // mejor mandar un solo error para mantener un mensaje estandar
+    const firstError = error.errors[0];
+    const errMessage = `(${firstError.path[0]}) ${firstError.message}`;
+    sendValidationError(response, errMessage);
+    return;
+  }
+
+  if (isPgError(error)) {
+    let message = "Ocurrió un error inesperado en la base de datos.";
+
+    console.log(error);
+    switch (error.code) {
+      case PgErrorCode.UNIQUE_VIOLATION:
+        // increible error managing
+        // formato: Key (siglas)=(AAX) already exists.
+        const errorValue = error.detail.split(" ")[1];
+        message = `La clave ${errorValue} ya existe. Intenta con otro.`;
+        break;
+    }
+
+    sendErrorResponse(response, { message }, HttpStatusCode.BAD_REQUEST);
+    return;
   }
 
   // Handle other types of errors
   const res =
     process.env.APP_ENV === "dev"
       ? { message: error.message }
-      : { message: "Internal Server Error" };
+      : {
+          message:
+            "Ocurrió un error inesperado en el servidor. Intenta nuevamente.",
+        };
   sendErrorResponse(response, res);
 };
