@@ -12,9 +12,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "./theme-toggler";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const items = [
   {
@@ -41,10 +43,24 @@ const items = [
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { state } = useSidebar();
 
   return (
     <Sidebar variant="sidebar" collapsible="icon">
-      <SidebarHeader></SidebarHeader>
+      <SidebarHeader className="flex flex-row justify-between items-center gap-4 pt-4">
+        <Image
+          width={64}
+          height={64}
+          className="object-contain"
+          src={"/favicon.ico"}
+          alt="Logo de la UAA"
+        />
+        {state === "expanded" && (
+          <span className="font-semibold text-pretty leading-snug">
+            Universidad Autónoma de Asunción
+          </span>
+        )}
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Módulos</SidebarGroupLabel>
@@ -73,7 +89,6 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              {/* TODO: solucionar el bug molesto del scrollbar cuando se estira el sidebar*/}
               <ModeToggle />
             </SidebarMenuButton>
           </SidebarMenuItem>

@@ -4,7 +4,7 @@ import "./globals.css";
 import Providers from "@/providers";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
-import { Toaster } from "sonner";
+import Toaster from "@/components/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,12 +35,12 @@ export default function RootLayout({
       >
         <Providers>
           <AppSidebar />
-          <main className="w-full">
+          <main className="w-full overflow-x-hidden">
             <SidebarTrigger />
             {children}
           </main>
+          <Toaster />
         </Providers>
-        <Toaster richColors />
       </body>
     </html>
   );

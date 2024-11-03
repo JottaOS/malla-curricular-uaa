@@ -7,7 +7,6 @@ import { ColumnDef, Table } from "@tanstack/react-table";
 import { toast } from "sonner";
 
 const handleDelete = async (table: Table<any>, id: number) => {
-  console.log(`id: ${id}`)
   try {
     await deleteFacultad(id);
     table.options.meta?.removeRow(id);
@@ -21,7 +20,7 @@ const handleDelete = async (table: Table<any>, id: number) => {
 export const columns: ColumnDef<Facultad>[] = [
   {
     accessorKey: "id",
-    header: "ID",
+    header: ({ column }) => <SortToggler column={column} text="ID" />,
   },
   {
     accessorKey: "nombre",

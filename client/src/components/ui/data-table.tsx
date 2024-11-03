@@ -79,7 +79,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className={`rounded-md border ${className}`}>
+    <div className={`rounded-md border ${className} w-full`}>
       <div className="p-4 flex justify-between items-center gap-2">
         <div className="flex gap-2 lg:gap-4">
           <Button onClick={onCreate}>

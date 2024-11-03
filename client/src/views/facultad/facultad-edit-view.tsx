@@ -14,7 +14,7 @@ const emptyFacultad: Facultad = {
 };
 
 const FacultadEditView = ({ id }: { id: number }) => {
-  const { error, facultad, loading } = useFacultad({ id });
+  const { facultad, loading } = useFacultad({ id });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const router = useRouter();
 
@@ -35,10 +35,6 @@ const FacultadEditView = ({ id }: { id: number }) => {
       setIsSubmitting(false);
     }
   };
-
-  if (error) {
-    return <div>error: {JSON.stringify(error)}</div>;
-  }
 
   return (
     <section className="p-8 grid gap-4">
