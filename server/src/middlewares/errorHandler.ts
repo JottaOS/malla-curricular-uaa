@@ -19,12 +19,10 @@ export const errorHandler = (
   response: Response,
   next: NextFunction
 ) => {
-  // Log the error stack for debugging purposes
   console.error(error.stack);
 
-  // Handle Zod validation errors
   if (error instanceof z.ZodError) {
-    // mejor mandar un solo error para mantener un mensaje estandar
+    // mejor mandar un solo error para mantener un mensaje estándar
     const firstError = error.errors[0];
     const errMessage = `(${firstError.path[0]}) ${firstError.message}`;
     sendValidationError(response, errMessage);
@@ -33,14 +31,23 @@ export const errorHandler = (
 
   if (isPgError(error)) {
     let message = "Ocurrió un error inesperado en la base de datos.";
-
+    let errorValue = "";
     console.log(error);
+
+    // increible error managing
     switch (error.code) {
       case PgErrorCode.UNIQUE_VIOLATION:
-        // increible error managing
         // formato: Key (siglas)=(AAX) already exists.
-        const errorValue = error.detail.split(" ")[1];
+        errorValue = error.detail.split(" ")[1];
         message = `La clave ${errorValue} ya existe. Intenta con otro.`;
+        break;
+      // Espero que el usuario nunca vea este mensaje de error
+      // pero en caso de que salte, mejor que esté formateado
+      case PgErrorCode.FOREIGN_KEY_VIOLATION:
+        // formato: Key (facultad_id)=(4) is not present in table "facultad".
+        errorValue = error.detail.split(" ")[1];
+        const table = error.detail.split(" ")[7];
+        message = `La clave ${errorValue} no existe en la tabla ${table}`;
         break;
     }
 
@@ -48,7 +55,7 @@ export const errorHandler = (
     return;
   }
 
-  // Handle other types of errors
+  // cualqueir otro tipo de error
   const res =
     process.env.APP_ENV === "dev"
       ? { message: error.message }

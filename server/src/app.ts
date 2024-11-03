@@ -4,6 +4,7 @@ import { corsMiddleware } from "./middlewares/cors";
 import { notFoundHandler } from "./middlewares/notFound";
 import { errorHandler } from "./middlewares/errorHandler";
 import facultadRouter from "./features/facultad/facultadRoutes";
+import materiaRouter from "./features/materia/materiaRoutes";
 import { loggerMiddleware } from "./middlewares/logger";
 
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(corsMiddleware());
 app.use(loggerMiddleware);
 
 app.use("/api/facultades", facultadRouter);
+app.use("/api/materias", materiaRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
