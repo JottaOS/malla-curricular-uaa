@@ -10,7 +10,7 @@ const useFacultad = ({ id }: { id: number }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(`${SERVER}/facultades/10000`);
+      const response = await fetch(`${SERVER}/facultades/${id}`);
       const json = await response.json();
       console.log(json);
       if (!response.ok) {
