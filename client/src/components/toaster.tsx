@@ -10,6 +10,7 @@ const Toaster = () => {
     <BaseToaster
       richColors
       closeButton
+      duration={5000}
       theme={theme as "light" | "dark" | "system"}
     />
   );
