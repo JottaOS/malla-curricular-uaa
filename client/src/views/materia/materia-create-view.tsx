@@ -17,7 +17,6 @@ const MateriaCreateView = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const onSubmit = async (formData: Materia, resetForm?: () => void) => {
-    console.log("Form data => ", formData);
     setIsSubmitting(true);
     try {
       const data = await createMateria(formData);

@@ -16,12 +16,12 @@ export const createMateria = async (materia: Materia) => {
   return json;
 };
 
-export const updateFacultad = async (materia: Materia) => {
+export const updateMateria = async (materia: Materia) => {
   if (!materia.id) throw new Error("Id no proveído");
 
-  const response = await fetch(`${SERVER}/facultades/${materia.id}`, {
+  const response = await fetch(`${SERVER}/materias/${materia.id}`, {
     body: JSON.stringify(materia),
-    method: "PATCH",
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
