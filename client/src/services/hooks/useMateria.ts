@@ -27,7 +27,7 @@ const useMateria = ({ id }: UseMateriaProps) => {
     }
     setMateria(json.data);
     setLoading(false);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     fetchData();
