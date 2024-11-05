@@ -39,8 +39,8 @@ export const deleteMateria = async (id: number) => {
   const response = await fetch(`${SERVER}/materias/${id}`, {
     method: "DELETE",
   });
+  if (response.status === 204) return;
 
   const json = await response.json();
   return json;
-
 };

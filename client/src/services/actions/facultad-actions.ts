@@ -39,6 +39,7 @@ export const deleteFacultad = async (id: number) => {
   const response = await fetch(`${SERVER}/facultades/${id}`, {
     method: "DELETE",
   });
+  if (response.status === 204) return;
   const json = await response.json();
   return json;
 };
