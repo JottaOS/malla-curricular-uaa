@@ -26,6 +26,7 @@ import {
   ChevronRight,
   ChevronsLeft,
   ChevronsRight,
+  Download,
   Plus,
   RefreshCcw,
   Search,
@@ -40,6 +41,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./select";
+import { downloadFile, generateExcelFile } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -101,6 +103,12 @@ export function DataTable<TData, TValue>({
     },
   });
 
+  const downloadExcelReport = () => {
+    const data = table.getRowModel().rows.map((item) => ({ ...item.original }));
+    const file = generateExcelFile(data);
+    downloadFile(file, "export.xlsx");
+  };
+
   return (
     <>
       <div className={`rounded-md border ${className} w-full mb-4`}>
@@ -111,6 +119,14 @@ export function DataTable<TData, TValue>({
             </Button>
             <Button variant={"secondary"} onClick={onRefresh}>
               <RefreshCcw size={8} />
+            </Button>
+            <Button
+              variant={"outline"}
+              size={"icon"}
+              className="text-primary"
+              onClick={downloadExcelReport}
+            >
+              <Download size={8} />
             </Button>
           </div>
           <Input
