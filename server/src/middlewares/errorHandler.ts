@@ -41,13 +41,13 @@ export const errorHandler = (
         errorValue = error.detail.split(" ")[1];
         message = `La clave ${errorValue} ya existe. Intenta con otro.`;
         break;
-      // Espero que el usuario nunca vea este mensaje de error
-      // pero en caso de que salte, mejor que esté formateado
+
+      // tira el mismo código cuando el fk no existe en la tabla padre,
+      // pero ese caso si lo valido
       case PgErrorCode.FOREIGN_KEY_VIOLATION:
-        // formato: Key (facultad_id)=(4) is not present in table "facultad".
+        // formato: Key (id)=(7) is still referenced from table "materia"
         errorValue = error.detail.split(" ")[1];
-        const table = error.detail.split(" ")[7];
-        message = `La clave ${errorValue} no existe en la tabla ${table}`;
+        message = `El registro con clave ${errorValue} aún está siendo referenciado en otra entidad`;
         break;
     }
 

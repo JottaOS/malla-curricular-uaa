@@ -11,9 +11,8 @@ const handleDelete = async (table: Table<any>, id: number) => {
     await deleteFacultad(id);
     table.options.meta?.removeRow(id);
     toast.success("Facultad eliminada exitosamente");
-  } catch (err) {
-    console.log(err);
-    toast.error(JSON.stringify(err));
+  } catch (err: any) {
+    toast.error(err.message);
   }
 };
 

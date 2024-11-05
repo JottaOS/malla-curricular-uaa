@@ -3,7 +3,7 @@
 import { DataTable } from "@/components/ui/data-table";
 import useFacultades from "@/services/hooks/useFacultades";
 import React from "react";
-import { columns } from "./columns";
+import { columns } from "./facultad-columns";
 import { useRouter } from "next/navigation";
 
 const FacultadListView = () => {
