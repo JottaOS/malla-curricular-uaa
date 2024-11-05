@@ -8,7 +8,10 @@ import { toast } from "sonner";
 
 const handleDelete = async (table: Table<any>, id: number) => {
   try {
-    await deleteMateria(id);
+    const data = await deleteMateria(id);
+    if (data && !data.success) {
+      throw new Error(data.error.message);
+    }
     table.options.meta?.removeRow(id);
     toast.success("Materia eliminada exitosamente");
   } catch (err) {

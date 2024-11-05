@@ -40,7 +40,7 @@ export const deleteMateria = async (id: number) => {
     method: "DELETE",
   });
 
-  if (response.status === 404) {
-    throw new Error("Materia no encontrada");
-  }
+  const json = await response.json();
+  return json;
+
 };
