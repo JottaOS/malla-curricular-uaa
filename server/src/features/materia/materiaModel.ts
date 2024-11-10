@@ -28,6 +28,7 @@ export const materiaSchema = z.object({
     .nonnegative("Debe ser mayor o igual a 0"),
   creditosPracticas: z.number().int().nonnegative("Debe ser mayor o igual a 0"),
   facultadId: z.number().nonnegative().int("Debe ser un número entero"),
+  facultadSiglas: z.string().optional()
 });
 
 export const materiaPartial = materiaSchema.partial();
@@ -43,4 +44,5 @@ export interface MateriaDB
   creditos_presenciales: number;
   creditos_practicas: number;
   facultad_id: number;
+  facultad_siglas?: string;
 }

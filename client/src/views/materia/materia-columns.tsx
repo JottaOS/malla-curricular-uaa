@@ -50,13 +50,18 @@ export const columns: ColumnDef<Materia>[] = [
     cell: ({ row }) => (
       <div className="text-right">{row.getValue("creditosPracticas")}</div>
     ),
+    size: 50,
   },
+  // { accessorKey: "facultadId",
+  //   header: ({ column }) => <SortToggler column={column} text="Facultad ID" />,
+  //   cell: ({ row }) => (
+  //     <div className="text-right">{row.getValue("facultadId")}</div>
+  //   ),
+  //   size: 50,
+  // },
   {
-    accessorKey: "facultadId",
-    header: ({ column }) => <SortToggler column={column} text="Facultad ID" />,
-    cell: ({ row }) => (
-      <div className="text-right">{row.getValue("facultadId")}</div>
-    ),
+    accessorKey: "facultadSiglas",
+    header: ({ column }) => <SortToggler column={column} text="Facultad" />,
   },
   {
     accessorKey: "actions",

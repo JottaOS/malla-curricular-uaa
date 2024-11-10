@@ -6,7 +6,7 @@ import {
 } from "../../utils/responseHandler";
 import HttpStatusCode from "../../utils/httpStatusCode";
 import { FacultadRepository } from "./facultadRepository";
-import { Facultad, facultadPartial, facultadSchema } from "./facultadModel";
+import { facultadPartial, facultadSchema } from "./facultadModel";
 
 export class FacultadController {
   static async getAll(_: Request, res: Response, next: NextFunction) {
@@ -36,7 +36,7 @@ export class FacultadController {
 
   static async create(req: Request, res: Response, next: NextFunction) {
     try {
-      facultadSchema.parse(req.body)
+      facultadSchema.parse(req.body);
       const facultad = await FacultadRepository.create(req.body);
       sendSuccessResponse(res, facultad, HttpStatusCode.CREATED);
     } catch (error: any) {
@@ -56,7 +56,7 @@ export class FacultadController {
       }
 
       // validar el payload
-      facultadPartial.parse(req.body)
+      facultadPartial.parse(req.body);
       const updatedFacultad = await FacultadRepository.update(
         facultad[0].id,
         req.body

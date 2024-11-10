@@ -3,7 +3,11 @@ import { Materia, MateriaDB } from "./materiaModel";
 
 export class MateriaRepository {
   static async getAll() {
-    return await query("SELECT * FROM materia;");
+    return await query(`
+      SELECT m.*, f.siglas as facultad_siglas
+      FROM materia m
+      INNER JOIN facultad f ON f.id = m.facultad_id;
+      `);
   }
 
   static async getById(id: number): Promise<MateriaDB[]> {

@@ -28,6 +28,7 @@ export const materiaSchema = z.object({
     .nonnegative("Debe ser mayor o igual a 0"),
   creditosPracticas: z.number().int().nonnegative("Debe ser mayor o igual a 0"),
   facultadId: z.number().min(1, "El campo es requerido"),
+  facultadSiglas: z.string().optional(),
 });
 
 export type Materia = z.infer<typeof materiaSchema>;
