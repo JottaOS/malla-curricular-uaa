@@ -16,8 +16,8 @@ export class MateriaRepository {
 
   static async create(materia: Materia): Promise<MateriaDB[]> {
     return await query(
-      `INSERT INTO materia(codigo, nombre, creditos_presenciales, creditos_practicas, facultad_id) 
-      VALUES ($1, $2, $3, $4, $5)
+      `INSERT INTO materia(codigo, nombre, creditos_presenciales, creditos_practicas, facultad_id, estado) 
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;`,
       [
         materia.codigo,
@@ -25,6 +25,7 @@ export class MateriaRepository {
         materia.creditosPresenciales,
         materia.creditosPracticas,
         materia.facultadId,
+        materia.estado
       ]
     );
   }
@@ -32,8 +33,8 @@ export class MateriaRepository {
   static async update(id: number, materia: Materia): Promise<MateriaDB[]> {
     return await query(
       `UPDATE materia 
-      SET codigo = $1, nombre = $2, creditos_presenciales = $3, creditos_practicas = $4, facultad_id = $5 
-      WHERE id = $6
+      SET codigo = $1, nombre = $2, creditos_presenciales = $3, creditos_practicas = $4, facultad_id = $5, estado = $6
+      WHERE id = $7
       RETURNING *;`,
       [
         materia.codigo,
@@ -41,6 +42,7 @@ export class MateriaRepository {
         materia.creditosPresenciales,
         materia.creditosPracticas,
         materia.facultadId,
+        materia.estado,
         id,
       ]
     );
