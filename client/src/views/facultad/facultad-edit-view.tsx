@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 const emptyFacultad: Facultad = {
   nombre: "",
   siglas: "",
+  estado: "",
 };
 
 const FacultadEditView = ({ id }: { id: number }) => {

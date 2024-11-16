@@ -17,6 +17,7 @@ import {
 import { ModeToggle } from "./theme-toggler";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const items = [
   {
@@ -29,16 +30,17 @@ const items = [
     url: "/materias",
     icon: Library,
   },
-  {
-    title: "Carreras",
-    url: "/carreras",
-    icon: GraduationCap,
-  },
-  {
-    title: "Mallas Curriculares",
-    url: "/mallas",
-    icon: BookText,
-  },
+  // URLs comentadas para la primera reunión de monitoreo y control
+  // {
+  //   title: "Carreras",
+  //   url: "/carreras",
+  //   icon: GraduationCap,
+  // },
+  // {
+  //   title: "Mallas Curriculares",
+  //   url: "/mallas",
+  //   icon: BookText,
+  // },
 ];
 
 export function AppSidebar() {
@@ -47,19 +49,24 @@ export function AppSidebar() {
 
   return (
     <Sidebar variant="sidebar" collapsible="icon">
-      <SidebarHeader className="flex flex-row justify-between items-center gap-4 pt-4">
-        <Image
-          width={64}
-          height={64}
-          className="object-contain"
-          src={"/favicon.ico"}
-          alt="Logo de la UAA"
-        />
-        {state === "expanded" && (
-          <span className="font-semibold text-pretty leading-snug">
-            Universidad Autónoma de Asunción
-          </span>
-        )}
+      <SidebarHeader>
+        <Link
+          href={"/"}
+          className="flex flex-row justify-between items-center gap-4 pt-4"
+        >
+          <Image
+            width={64}
+            height={64}
+            className="object-contain"
+            src={"/favicon.ico"}
+            alt="Logo de la UAA"
+          />
+          {state === "expanded" && (
+            <span className="font-semibold text-pretty leading-snug">
+              Universidad Autónoma de Asunción
+            </span>
+          )}
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
