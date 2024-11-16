@@ -1,5 +1,5 @@
 "use client";
-import { BookText, GraduationCap, Library, University } from "lucide-react";
+import { Library, University } from "lucide-react";
 
 import {
   Sidebar,
