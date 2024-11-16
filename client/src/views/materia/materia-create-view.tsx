@@ -11,6 +11,7 @@ const defaultValues: Materia = {
   creditosPracticas: 0,
   creditosPresenciales: 0,
   facultadId: 0,
+  estado: "",
 };
 
 const MateriaCreateView = () => {

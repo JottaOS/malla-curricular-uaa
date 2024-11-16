@@ -17,6 +17,7 @@ export const facultadSchema = z.object({
     .min(3, "La longitud mínima es de 3 caracteres")
     .max(10, "La longitud máxima es de 10 caracteres")
     .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚãẽĩõũỹÃẼĨÕŨỸ]+$/, "Solo letras, sin espacios"),
+  estado: z.string().min(1, "El campo es requerido"),
 });
 
 export const facultadPartial = facultadSchema.partial();

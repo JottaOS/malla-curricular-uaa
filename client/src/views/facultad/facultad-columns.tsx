@@ -33,6 +33,10 @@ export const columns: ColumnDef<Facultad>[] = [
     header: ({ column }) => <SortToggler column={column} text="Siglas" />,
   },
   {
+    accessorKey: "estado",
+    header: ({ column }) => <SortToggler column={column} text="Estado" />,
+  },
+  {
     accessorKey: "actions",
     header: "",
     cell: ({ table, row }) => (

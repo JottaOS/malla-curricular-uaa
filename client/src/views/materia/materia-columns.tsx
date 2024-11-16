@@ -64,6 +64,10 @@ export const columns: ColumnDef<Materia>[] = [
     header: ({ column }) => <SortToggler column={column} text="Facultad" />,
   },
   {
+    accessorKey: "estado",
+    header: ({ column }) => <SortToggler column={column} text="Estado" />,
+  },
+  {
     accessorKey: "actions",
     header: "",
     cell: ({ table, row }) => (

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ESTADO_SCHEMA } from "../../utils/constants";
 
 export const materiaSchema = z.object({
   id: z.number().optional(),
@@ -25,10 +26,16 @@ export const materiaSchema = z.object({
   creditosPresenciales: z
     .number()
     .int()
-    .nonnegative("Debe ser mayor o igual a 0"),
-  creditosPracticas: z.number().int().nonnegative("Debe ser mayor o igual a 0"),
+    .nonnegative("Debe ser mayor o igual a 0")
+    .max(100, "Debe ser menor o igual a 100"),
+  creditosPracticas: z
+    .number()
+    .int()
+    .nonnegative("Debe ser mayor o igual a 0")
+    .max(100, "Debe ser menor o igual a 100"),
+  estado: ESTADO_SCHEMA,
   facultadId: z.number().nonnegative().int("Debe ser un número entero"),
-  facultadSiglas: z.string().optional()
+  facultadSiglas: z.string().optional(),
 });
 
 export const materiaPartial = materiaSchema.partial();

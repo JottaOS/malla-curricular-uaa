@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ESTADO_SCHEMA } from "../../utils/constants";
 
 export const facultadSchema = z.object({
   id: z.number().optional(), // id autonumérico
@@ -17,6 +18,7 @@ export const facultadSchema = z.object({
     .min(3, "La longitud mínima es de 3 caracteres")
     .max(10, "La longitud máxima es de 10 caracteres")
     .regex(/^[a-zA-ZñÑáéíóúÁÉÍÓÚãẽĩõũỹÃẼĨÕŨỸ]+$/, "Solo letras, sin espacios"),
+  estado: ESTADO_SCHEMA,
 });
 
 export const facultadPartial = facultadSchema.partial();

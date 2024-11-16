@@ -131,6 +131,7 @@ const transformMaterias = (materias: MateriaDB[]): Materia[] => {
     creditosPresenciales: materia.creditos_presenciales,
     creditosPracticas: materia.creditos_practicas,
     facultadId: materia.facultad_id,
+    estado: materia.estado,
     // LAZY SOLUTION DON'T BOTHER ME !!!
     ...(materia.facultad_siglas && { facultadSiglas: materia.facultad_siglas }),
   }));
