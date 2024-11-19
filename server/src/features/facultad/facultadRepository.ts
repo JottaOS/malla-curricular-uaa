@@ -12,15 +12,15 @@ export class FacultadRepository {
 
   static async create(facultad: Facultad) {
     return await query(
-      "INSERT INTO facultad(nombre, siglas) VALUES ($1, $2) RETURNING *",
-      [facultad.nombre, facultad.siglas]
+      "INSERT INTO facultad(nombre, siglas, estado) VALUES ($1, $2, $3) RETURNING *",
+      [facultad.nombre, facultad.siglas, facultad.estado]
     );
   }
 
   static async update(id: number, facultad: Facultad) {
     return await query(
-      "UPDATE facultad SET nombre = $1, siglas = $2 WHERE id = $3 RETURNING *",
-      [facultad.nombre, facultad.siglas, id]
+      "UPDATE facultad SET nombre = $1, siglas = $2 , estado = $3 WHERE id = $4 RETURNING *",
+      [facultad.nombre, facultad.siglas, facultad.estado, id]
     );
   }
 

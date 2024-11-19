@@ -8,6 +8,7 @@ import { toast } from "sonner";
 const defaultValues: Facultad = {
   nombre: "",
   siglas: "",
+  estado: ""
 };
 
 const FacultadCreateView = () => {

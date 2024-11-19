@@ -16,6 +16,13 @@ import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import useFacultades from "@/services/hooks/useFacultades";
 import Combobox from "@/components/combobox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export interface MateriaFormProps {
   defaultValues: Materia;
@@ -37,10 +44,12 @@ const MateriaForm = ({
 
   const facultadesOptions = useMemo(
     () =>
-      facultades?.map((facultad) => ({
-        label: `${facultad.siglas} - ${facultad.nombre}`,
-        value: facultad.id ?? 0,
-      })) ?? [],
+      facultades
+        ?.filter((facultad) => facultad.estado === "ACTIVO")
+        ?.map((facultad) => ({
+          label: `${facultad.siglas} - ${facultad.nombre}`,
+          value: facultad.id ?? 0,
+        })) ?? [],
     [facultades]
   );
 
@@ -134,25 +143,53 @@ const MateriaForm = ({
             </div>
           </div>
 
-          <div className="flex w-full">
-            <FormField
-              control={form.control}
-              name="facultadId"
-              render={() => (
-                <FormItem className="flex-1 lg:flex-none">
-                  <FormLabel>Facultad</FormLabel>
-                  <Combobox
-                    fieldValue={watchedFacultadId}
-                    options={facultadesOptions}
-                    onSelect={(value) => form.setValue("facultadId", value)}
-                  />
-                  <FormDescription>
-                    Facultad encargada de gestionar la materia
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="col-span-2 lg:col-span-1">
+              <FormField
+                control={form.control}
+                name="facultadId"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Facultad</FormLabel>
+                    <Combobox
+                      fieldValue={watchedFacultadId}
+                      options={facultadesOptions}
+                      onSelect={(value) => form.setValue("facultadId", value)}
+                    />
+                    <FormDescription>
+                      Facultad encargada de gestionar la materia
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="col-span-2 lg:col-span-1">
+              <FormField
+                control={control}
+                name={"estado"}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Estado</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Selecciona un estado" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ACTIVO">ACTIVO</SelectItem>
+                          <SelectItem value="INACTIVO">INACTIVO</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
         </form>
       </Form>
