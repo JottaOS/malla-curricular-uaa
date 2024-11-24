@@ -28,7 +28,7 @@ export class CarreraController {
         sendNotFoundResponse(res, "Carrera no encontrada");
         return;
       }
-      sendSuccessResponse(res, carrera);
+      sendSuccessResponse(res, carrera[0]);
     } catch (error: any) {
       next(error);
     }

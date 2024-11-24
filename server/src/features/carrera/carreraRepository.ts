@@ -37,10 +37,11 @@ export class CarreraRepository {
           c.estado,
           c.duracion,
           c.unidad_tiempo as "unidadTiempo",
-          COALESCE(JSON_AGG(DISTINCT ca.acreditacion_id) FILTER (WHERE ca.acreditacion_id IS NOT NULL), '[]') AS acreditaciones
+          COALESCE(JSON_AGG(DISTINCT a.descripcion) FILTER (WHERE a.descripcion IS NOT NULL), '[]') AS acreditaciones
       FROM carrera c
       INNER JOIN facultad f ON f.id = c.facultad_id
       LEFT JOIN carrera_acreditacion ca ON c.id = ca.carrera_id
+      LEFT JOIN acreditacion a ON ca.acreditacion_id = a.id
       WHERE c.id = $1
       GROUP BY c.id, f.siglas`,
       [id]
