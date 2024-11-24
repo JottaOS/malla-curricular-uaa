@@ -19,8 +19,11 @@ export enum ModalidadCarrera {
   VIRTUAL_PRESENCIAL = "VIRTUAL_PRESENCIAL",
 }
 
+export enum UnidadTiempo {
+  AÑOS = "AÑOS",
+  SEMANAS = "SEMANAS",
+}
+
 export const ESTADO_SCHEMA = z.nativeEnum(Estado, {
   errorMap: () => ({ message: "Debe ser ACTIVO o INACTIVO" }),
 });
-
-
