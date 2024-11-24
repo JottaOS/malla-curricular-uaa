@@ -1,5 +1,5 @@
 "use client";
-import { Library, University } from "lucide-react";
+import { GraduationCap, Library, University } from "lucide-react";
 
 import {
   Sidebar,
@@ -30,12 +30,12 @@ const items = [
     url: "/materias",
     icon: Library,
   },
+  {
+    title: "Carreras",
+    url: "/carreras",
+    icon: GraduationCap,
+  },
   // URLs comentadas para la primera reunión de monitoreo y control
-  // {
-  //   title: "Carreras",
-  //   url: "/carreras",
-  //   icon: GraduationCap,
-  // },
   // {
   //   title: "Mallas Curriculares",
   //   url: "/mallas",
