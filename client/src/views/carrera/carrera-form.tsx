@@ -280,7 +280,7 @@ const CarreraForm = ({
                         value={field.value}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Selecciona un estado" />
+                          <SelectValue placeholder="Selecciona una unidad de tiempo" />
                         </SelectTrigger>
                         <SelectContent>
                           {UNIDADES_TIEMPO.map(({ value, label }) => (
