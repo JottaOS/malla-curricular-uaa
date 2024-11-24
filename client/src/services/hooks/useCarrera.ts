@@ -1,6 +1,5 @@
 import { SERVER } from "@/lib/constants";
 import { CarreraForm } from "@/types/carrera";
-import { Materia } from "@/types/materia";
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 
