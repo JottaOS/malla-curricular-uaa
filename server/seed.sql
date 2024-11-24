@@ -58,11 +58,15 @@ CREATE TABLE carrera (
     tipo VARCHAR(30) NOT NULL,                -- Tipo de carrera (grado, maestrías, etc.)
     facultad_id INT NOT NULL,                 -- Relación con la tabla facultad
     modalidad VARCHAR(50) NOT NULL,           -- Modalidad (virtual, presencial, etc.)
-    perfil_profesional TEXT,                  -- Campo de texto para el perfil profesional
+    perfil_profesional TEXT NOT NULL,         -- Campo de texto para el perfil profesional
+    duracion INT NOT NULL,					  -- Duración de la carrera o programa
+    unidad_tiempo VARCHAR(25) NOT NULL,		  -- Unidad de tiempo (semanas, años, etc)
+    estado VARCHAR(10) NOT NULL,			  -- Estado actual de la carrera (ACTIVO | INACTIVO)
     CONSTRAINT fk_facultad 
         FOREIGN KEY (facultad_id) 
         REFERENCES facultad (id)              -- Relación con la tabla facultad
 );
+
 
 -- Agregar comentarios a las columnas
 COMMENT ON COLUMN carrera.id IS 'Identificador único de la carrera';
@@ -71,24 +75,10 @@ COMMENT ON COLUMN carrera.tipo IS 'Tipo de la carrera (grado, maestrías, etc.)'
 COMMENT ON COLUMN carrera.facultad_id IS 'Identificador de la facultad a la que pertenece la carrera';
 COMMENT ON COLUMN carrera.modalidad IS 'Modalidad de la carrera (virtual, presencial, ambos)';
 COMMENT ON COLUMN carrera.perfil_profesional IS 'Descripción del perfil profesional de egreso';
+COMMENT ON COLUMN carrera.duracion IS 'Duración de la carrera o programa';
+COMMENT ON COLUMN carrera.unidad_tiempo IS 'Unidad de tiempo para la duración de la carrera o programa (semanas, años)';
+COMMENT ON COLUMN carrera.estado IS 'Estado actual de la carrera (ACTIVO | INACTIVO)';
 
--- tabla M:M de carrera con acreditaciones
-CREATE TABLE carrera_acreditacion (
-    id SERIAL PRIMARY KEY,            -- Identificador único
-    carrera_id INT NOT NULL,          -- Relación con la tabla carrera
-    acreditacion_id INT NOT NULL,     -- Relación con la tabla acreditacion
-    CONSTRAINT fk_carrera 
-        FOREIGN KEY (carrera_id) 
-        REFERENCES carrera (id),      -- Relación con la tabla carrera
-    CONSTRAINT fk_acreditacion 
-        FOREIGN KEY (acreditacion_id) 
-        REFERENCES acreditacion (id)  -- Relación con la tabla acreditacion
-);
-
--- Agregar comentarios a las columnas
-COMMENT ON COLUMN carrera_acreditacion.id IS 'Identificador único de la relación entre carrera y acreditación';
-COMMENT ON COLUMN carrera_acreditacion.carrera_id IS 'Identificador de la carrera asociada a la acreditación';
-COMMENT ON COLUMN carrera_acreditacion.acreditacion_id IS 'Identificador de la acreditación asociada a la carrera';
 
 -- tabla para asociar carreras con acreditaciones M:M
 CREATE TABLE carrera_acreditacion (
@@ -107,9 +97,3 @@ CREATE TABLE carrera_acreditacion (
 COMMENT ON COLUMN carrera_acreditacion.carrera_id IS 'Identificador de la carrera asociada a la acreditación';
 COMMENT ON COLUMN carrera_acreditacion.acreditacion_id IS 'Identificador de la acreditación asociada a la carrera';
 
-
--- Agregar estado a carrera
-ALTER TABLE carrera 
-ADD COLUMN estado VARCHAR(20) NOT NULL DEFAULT 'ACTIVO';
-
-COMMENT ON COLUMN carrera.estado IS 'Estado actual de la carrera (ACTIVO | INACTIVO)'; 
