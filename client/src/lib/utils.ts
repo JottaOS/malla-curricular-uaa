@@ -25,7 +25,7 @@ export const generateExcelFile = <T>(data: T[]) => {
       // @ts-expect-error Realmente no voy a pasar ni un dato que explote aca porque solo yo trabajo en esto. Buenas prácticas señores
       Object.entries(item).map(([key, value]) => [
         key,
-        typeof value === "object" ? JSON.stringify(value) : value,
+        typeof value === "object" ? formatObject(value) : value,
       ])
     )
   );
@@ -37,4 +37,12 @@ export const generateExcelFile = <T>(data: T[]) => {
   const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
 
   return excelBuffer;
+};
+
+const formatObject = (object: any) => {
+  if (Array.isArray(object)) {
+    return object.join(", ");
+  }
+
+  return JSON.stringify(object);
 };

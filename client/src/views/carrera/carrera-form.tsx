@@ -25,9 +25,6 @@ import {
   carreraFormSchema,
   CarreraForm as CarreraFormType,
   CarreraRequestDTO,
-  ModalidadCarrera,
-  TipoCarrera,
-  UnidadTiempoCarrera,
 } from "@/types/carrera";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -40,7 +37,12 @@ import {
 } from "@/components/ui/multi-select";
 import { Button } from "@/components/ui/button";
 import { Facultad } from "@/types/facultad";
-import { Estado } from "@/types";
+import {
+  ESTADOS,
+  MODALIDADES_CARRERA,
+  TIPOS_CARRERA,
+  UNIDADES_TIEMPO,
+} from "@/lib/constants";
 
 export interface CarreraFormProps {
   defaultValues: CarreraFormType;
@@ -141,17 +143,11 @@ const CarreraForm = ({
                           <SelectValue placeholder="Seleccione una modalidad" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value={ModalidadCarrera.PRESENCIAL}>
-                            Presencial
-                          </SelectItem>
-                          <SelectItem value={ModalidadCarrera.VIRTUAL}>
-                            A distancia
-                          </SelectItem>
-                          <SelectItem
-                            value={ModalidadCarrera.VIRTUAL_PRESENCIAL}
-                          >
-                            Presencial / A distancia
-                          </SelectItem>
+                          {MODALIDADES_CARRERA.map(({ value, label }) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -178,21 +174,11 @@ const CarreraForm = ({
                           <SelectValue placeholder="Seleccione un tipo" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value={TipoCarrera.GRADO}>
-                            Carrera de Grado
-                          </SelectItem>
-                          <SelectItem value={TipoCarrera.DIPLOMADO}>
-                            Diplomado
-                          </SelectItem>
-                          <SelectItem value={TipoCarrera.DOCTORADO}>
-                            Doctorado
-                          </SelectItem>
-                          <SelectItem value={TipoCarrera.ESPECIALIZACION}>
-                            Especialización
-                          </SelectItem>
-                          <SelectItem value={TipoCarrera.MAESTRIA}>
-                            Maestría
-                          </SelectItem>
+                          {TIPOS_CARRERA.map(({ value, label }) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -294,12 +280,11 @@ const CarreraForm = ({
                           <SelectValue placeholder="Selecciona un estado" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value={UnidadTiempoCarrera.AÑOS}>
-                            Años
-                          </SelectItem>
-                          <SelectItem value={UnidadTiempoCarrera.SEMANAS}>
-                            Semanas
-                          </SelectItem>
+                          {UNIDADES_TIEMPO.map(({ value, label }) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -325,10 +310,11 @@ const CarreraForm = ({
                           <SelectValue placeholder="Selecciona un estado" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value={Estado.ACTIVO}>ACTIVO</SelectItem>
-                          <SelectItem value={Estado.INACTIVO}>
-                            INACTIVO
-                          </SelectItem>
+                          {ESTADOS.map(({ value, label }) => (
+                            <SelectItem key={value} value={value}>
+                              {label}
+                            </SelectItem>
+                          ))}
                         </SelectContent>
                       </Select>
                     </FormControl>

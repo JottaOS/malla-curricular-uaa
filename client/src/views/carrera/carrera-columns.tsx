@@ -1,5 +1,6 @@
 import ActionColumn from "@/components/action-column";
 import SortToggler from "@/components/sort-toggler";
+import { ESTADOS, MODALIDADES_CARRERA, TIPOS_CARRERA } from "@/lib/constants";
 import { deleteCarrera } from "@/services/actions/carrera-actions";
 import { navigate } from "@/services/actions/navigate";
 import { CarreraTableColumns } from "@/types/carrera";
@@ -32,10 +33,37 @@ export const columns: ColumnDef<CarreraTableColumns>[] = [
   {
     accessorKey: "tipo",
     header: ({ column }) => <SortToggler column={column} text="Tipo" />,
+    cell: ({ row }) => (
+      <span>
+        {TIPOS_CARRERA.find((item) => item.value === row.original.tipo)?.label}
+      </span>
+    ),
   },
   {
     accessorKey: "modalidad",
     header: ({ column }) => <SortToggler column={column} text="Modalidad" />,
+    cell: ({ row }) => (
+      <span>
+        {
+          MODALIDADES_CARRERA.find(
+            (item) => item.value === row.original.modalidad
+          )?.label
+        }
+      </span>
+    ),
+  },
+  {
+    accessorKey: "facultadSiglas",
+    header: ({ column }) => <SortToggler column={column} text="Facultad" />,
+  },
+  {
+    accessorKey: "duracion",
+    header: ({ column }) => <SortToggler column={column} text="Duración" />,
+    cell: ({ row }) => (
+      <span>
+        {row.original.duracion} {row.original.unidadTiempo.toLowerCase()}
+      </span>
+    ),
   },
   {
     accessorKey: "perfilProfesional",
@@ -43,6 +71,7 @@ export const columns: ColumnDef<CarreraTableColumns>[] = [
       <SortToggler column={column} text="Perfil Profesional" />
     ),
   },
+
   {
     accessorKey: "acreditaciones",
     header: ({ column }) => (
@@ -51,20 +80,13 @@ export const columns: ColumnDef<CarreraTableColumns>[] = [
     cell: ({ row }) => <span>{row.original.acreditaciones?.join(", ")}</span>,
   },
   {
-    accessorKey: "facultadId",
-    header: ({ column }) => <SortToggler column={column} text="Facultad ID" />,
-    cell: ({ row }) => (
-      <div className="text-right">{row.getValue("facultadId")}</div>
-    ),
-    size: 50,
-  },
-  // {
-  //   accessorKey: "facultadSiglas",
-  //   header: ({ column }) => <SortToggler column={column} text="Facultad" />,
-  // },
-  {
     accessorKey: "estado",
     header: ({ column }) => <SortToggler column={column} text="Estado" />,
+    cell: ({ row }) => (
+      <span>
+        {ESTADOS.find((item) => item.value === row.original.estado)?.label}
+      </span>
+    ),
   },
   {
     accessorKey: "actions",

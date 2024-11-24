@@ -1,24 +1,4 @@
 import { z } from "zod";
-
-export enum TipoCarrera {
-  GRADO = "GRADO",
-  ESPECIALIZACION = "ESPECIALIZACION",
-  MAESTRIA = "MAESTRIA",
-  DIPLOMADO = "DIPLOMADO",
-  DOCTORADO = "DOCTORADO",
-}
-
-export enum ModalidadCarrera {
-  VIRTUAL = "VIRTUAL",
-  PRESENCIAL = "PRESENCIAL",
-  VIRTUAL_PRESENCIAL = "VIRTUAL_PRESENCIAL",
-}
-
-export enum UnidadTiempoCarrera {
-  SEMANAS = "SEMANAS",
-  AÑOS = "AÑOS",
-}
-
 export const carreraFormSchema = z.object({
   id: z.number().int().positive().optional(),
   nombre: z
