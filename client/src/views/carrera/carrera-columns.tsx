@@ -46,7 +46,7 @@ export const columns: ColumnDef<CarreraTableColumns>[] = [
   {
     accessorKey: "acreditaciones",
     header: ({ column }) => (
-      <SortToggler column={column} text="Perfil Profesional" />
+      <SortToggler column={column} text="Acreditaciones" />
     ),
     cell: ({ row }) => <span>{row.original.acreditaciones?.join(", ")}</span>,
   },

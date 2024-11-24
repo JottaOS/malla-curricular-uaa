@@ -1,10 +1,11 @@
 "use server";
 import { SERVER } from "@/lib/constants";
-import { CarreraForm } from "@/types/carrera";
+import { CarreraRequestDTO } from "@/types/carrera";
 import { revalidatePath } from "next/cache";
 
-export const createCarrera = async (carrera: CarreraForm) => {
-  const response = await fetch(`${SERVER}/materias`, {
+export const createCarrera = async (carrera: CarreraRequestDTO) => {
+  console.log("carrera front => ", carrera);
+  const response = await fetch(`${SERVER}/carreras`, {
     body: JSON.stringify(carrera),
     method: "POST",
     headers: {
@@ -16,10 +17,10 @@ export const createCarrera = async (carrera: CarreraForm) => {
   return json;
 };
 
-export const updateCarrera = async (carrera: CarreraForm) => {
+export const updateCarrera = async (carrera: CarreraRequestDTO) => {
   if (!carrera.id) throw new Error("Id no proveído");
 
-  const response = await fetch(`${SERVER}/carrera/${carrera.id}`, {
+  const response = await fetch(`${SERVER}/carreras/${carrera.id}`, {
     body: JSON.stringify(carrera),
     method: "PUT",
     headers: {

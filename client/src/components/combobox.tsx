@@ -45,7 +45,7 @@ const Combobox = ({ options, fieldValue, onSelect }: ComboboxProps) => {
           </Button>
         </FormControl>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0 mt-2">
+      <PopoverContent className="w-full p-0 mt-2" align="start">
         <Command>
           <CommandInput placeholder="Buscar..." />
           <CommandList>
