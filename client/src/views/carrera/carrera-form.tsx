@@ -43,6 +43,7 @@ import {
   TIPOS_CARRERA,
   UNIDADES_TIEMPO,
 } from "@/lib/constants";
+import useAcreditaciones from "@/services/hooks/useAcreditaciones";
 
 export interface CarreraFormProps {
   defaultValues: CarreraFormType;
@@ -57,6 +58,8 @@ const CarreraForm = ({
 }: CarreraFormProps) => {
   const router = useRouter();
   const { facultades } = useFacultades();
+  const { acreditaciones } = useAcreditaciones();
+
   const form = useForm<CarreraFormType>({
     resolver: zodResolver(carreraFormSchema),
     defaultValues,
@@ -78,9 +81,12 @@ const CarreraForm = ({
   const handleSubmit = (data: CarreraFormType) => {
     const finalData = {
       ...data,
+
+      // transformar descripciones de acreditaciones a su ID de base de datos
       acreditaciones:
-        data.acreditaciones?.map((nombre: string) =>
-          nombre === "ANEAES" ? 1 : 2
+        data.acreditaciones?.map(
+          (descripcion: string) =>
+            acreditaciones.find((a) => a.descripcion === descripcion)?.id ?? 0
         ) ?? [],
     };
 
@@ -200,20 +206,17 @@ const CarreraForm = ({
                     values={field.value ?? []}
                     onValuesChange={field.onChange}
                     loop
-                    className=""
                   >
                     <MultiSelectorTrigger>
                       <MultiSelectorInput placeholder="Selecciona acreditaciones" />
                     </MultiSelectorTrigger>
                     <MultiSelectorContent>
-                      {/* necesito listado de acreditaciones */}
                       <MultiSelectorList>
-                        <MultiSelectorItem value={"ANEAES"}>
-                          ANEAES
-                        </MultiSelectorItem>
-                        <MultiSelectorItem value={"CONES"}>
-                          CONES
-                        </MultiSelectorItem>
+                        {acreditaciones.map(({ id, descripcion }) => (
+                          <MultiSelectorItem key={id} value={descripcion}>
+                            {descripcion}
+                          </MultiSelectorItem>
+                        ))}
                       </MultiSelectorList>
                     </MultiSelectorContent>
                   </MultiSelector>
