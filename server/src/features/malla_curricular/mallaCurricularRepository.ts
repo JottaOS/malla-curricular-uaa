@@ -8,7 +8,7 @@ export class MallaCurricularRepository {
       SELECT 
           mc.id,
           mc.carrera_id as "carreraId",
-          c.nombre as "nombreCarrera",
+          c.nombre as "carreraNombre",
           mc.promocion,
           mc.fecha_inicio as "fechaInicio",
           mc.estado,
@@ -38,7 +38,7 @@ export class MallaCurricularRepository {
       SELECT 
           mc.id,
           mc.carrera_id as "carreraId",
-          c.nombre as "nombreCarrera",
+          c.nombre as "carreraNombre",
           mc.promocion,
           mc.fecha_inicio as "fechaInicio",
           mc.estado,
