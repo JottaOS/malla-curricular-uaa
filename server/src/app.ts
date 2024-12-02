@@ -7,6 +7,7 @@ import facultadRouter from "./features/facultad/facultadRoutes";
 import materiaRouter from "./features/materia/materiaRoutes";
 import carreraRouter from "./features/carrera/carreraRoutes";
 import acreditacionRouter from "./features/acreditacion/acreditacionRoutes";
+import mallaCurricularRouter from "./features/malla_curricular/mallaCurricularRoutes";
 import { loggerMiddleware } from "./middlewares/logger";
 
 dotenv.config();
@@ -22,6 +23,7 @@ app.use("/api/facultades", facultadRouter);
 app.use("/api/materias", materiaRouter);
 app.use("/api/carreras", carreraRouter);
 app.use("/api/acreditaciones", acreditacionRouter);
+app.use("/api/mallas-curriculares", mallaCurricularRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
