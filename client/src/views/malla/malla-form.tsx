@@ -9,12 +9,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import React, { useMemo, useState } from "react";
-import {
-  FormProvider,
-  useFieldArray,
-  useForm,
-  useWatch,
-} from "react-hook-form";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import Combobox from "@/components/combobox";
 import {
   Select,
@@ -43,10 +38,8 @@ import {
 import { PlusIcon, Trash2 } from "lucide-react";
 import useMaterias from "@/services/hooks/useMaterias";
 import { toOrdinal } from "@/lib/utils";
-import { semestreColumns } from "./malla-columns";
 import { SemestreTable } from "./semestre-table";
 import MateriaDialog from "./materia-dialog";
-import { Materia } from "@/types/materia";
 import { ESTADOS } from "@/lib/constants";
 
 export interface MallaFormProps {
@@ -74,20 +67,21 @@ const MallaForm = ({
   });
 
   const {
+    watch,
+    control,
+    reset,
     formState: { errors },
   } = form;
 
-  const watchedForm = form.watch();
-  const watchedCarreraId = form.watch("carreraId");
-  const watchedDetalles = useWatch({
-    control: form.control,
-    name: "detalles",
-    defaultValue: [],
-  });
+  const watchedCarreraId = watch("carreraId");
+  const watchedDetalles = watch("detalles");
 
-  console.log("form => ", watchedForm);
-  const { append: addDetalle, remove: removeDetalle } = useFieldArray({
-    control: form.control,
+  const {
+    append: addDetalle,
+    remove: removeDetalle,
+    update: updateDetalle,
+  } = useFieldArray({
+    control: control,
     name: "detalles",
   });
 
@@ -124,15 +118,35 @@ const MallaForm = ({
   };
 
   const handleSubmit = (data: MallaCurricular) => {
-    console.log("submit => ", data);
     const dto = convertirMallaADTO(data);
+    onSubmit(dto, reset);
+  };
 
-    console.log("dto => ", dto);
-    onSubmit(dto, form.reset);
+  const handleAddSemester = () => {
+    console.log("Add Semester Clicked", {
+      currentDetalles: watchedDetalles,
+      anoInicio: form.getValues("anoInicio"),
+    });
+
+    addDetalle({
+      semestre: (watchedDetalles?.length || 0) + 1,
+      anoLectivo:
+        form.getValues("anoInicio") +
+        Math.floor((watchedDetalles?.length || 0) / 2),
+      materias: [],
+    });
+  };
+
+  const handleDeleteMateria = (materiaId: number) => {
+    const detalle = { ...watchedDetalles[selectedSemestreIndex ?? 0] };
+    detalle.materias = detalle.materias.filter((mat) => mat.id !== materiaId);
+    updateDetalle(selectedSemestreIndex ?? 0, detalle);
   };
 
   const availableMaterias = calculateAvailableMaterias();
 
+  // const watchedform = watch();
+  // console.log(watchedform);
   return (
     <div className="grid gap-8 w-full">
       <FormProvider {...form}>
@@ -141,14 +155,9 @@ const MallaForm = ({
           className="grid gap-4"
           id="form"
         >
-          {Object.entries(errors).map(([key, value]) => (
-            <div>
-              Key: {key} error: {JSON.stringify(value)}
-            </div>
-          ))}
           <div className="flex items-center gap-4 md:flex-row flex-col">
             <FormField
-              control={form.control}
+              control={control}
               name="carreraId"
               render={() => (
                 <FormItem className="w-full">
@@ -164,7 +173,7 @@ const MallaForm = ({
             />
 
             <FormField
-              control={form.control}
+              control={control}
               name="anoInicio"
               render={() => (
                 <FormItem className="w-full">
@@ -184,7 +193,7 @@ const MallaForm = ({
             />
 
             <FormField
-              control={form.control}
+              control={control}
               name="promocion"
               render={() => (
                 <FormItem className="w-full">
@@ -203,7 +212,7 @@ const MallaForm = ({
               )}
             />
             <FormField
-              control={form.control}
+              control={control}
               name="estado"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -234,48 +243,46 @@ const MallaForm = ({
               <CardTitle>Semestres</CardTitle>
             </CardHeader>
             <CardContent>
-              {watchedDetalles.map((item, index) => (
-                <Card key={crypto.randomUUID()} className="mb-4">
-                  <CardHeader className="flex items-center flex-row justify-between">
-                    <CardTitle className="font-semibold text-lg">
-                      {toOrdinal(index + 1)} Semestre
-                    </CardTitle>
-                    <Button
-                      onClick={() => removeDetalle(index)}
-                      size={"icon"}
-                      type="button"
-                      variant={"destructive"}
-                      className="p-0 w-8 h-8 md:w-10 md:h-10 md:p-4"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </CardHeader>
-                  <CardContent>
-                    <SemestreTable
-                      columns={semestreColumns}
-                      data={item.materias}
-                      index={index}
-                      options={availableMaterias}
-                      onCreate={() => handleCreate(index)}
-                    />
-                  </CardContent>
-                </Card>
+              {watchedDetalles?.map((item, index) => (
+                <div key={crypto.randomUUID()}>
+                  <Card className="mb-4">
+                    <CardHeader className="flex items-center flex-row justify-between">
+                      <CardTitle className="font-semibold text-lg">
+                        {toOrdinal(index + 1)} Semestre
+                      </CardTitle>
+                      <Button
+                        onClick={() => removeDetalle(index)}
+                        size={"icon"}
+                        type="button"
+                        variant={"destructive"}
+                        className="p-0 w-8 h-8 md:w-10 md:h-10 md:p-4"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </CardHeader>
+                    <CardContent>
+                      <SemestreTable
+                        data={item.materias}
+                        onDelete={handleDeleteMateria}
+                        onCreate={() => handleCreate(index)}
+                      />
+                    </CardContent>
+                  </Card>
+                  {errors.detalles?.[index]?.materias && (
+                    <FormMessage className="my-2">
+                      {errors.detalles?.[index].materias.message}
+                    </FormMessage>
+                  )}
+                </div>
               ))}
             </CardContent>
+
             <CardFooter>
               <Button
                 type="button"
                 variant={"outline"}
                 className="border-primary text-primary hover:text-primary"
-                onClick={() =>
-                  addDetalle({
-                    semestre: watchedDetalles.length + 1,
-                    anoLectivo:
-                      form.getValues("anoInicio") +
-                      Math.floor(watchedDetalles.length / 2),
-                    materias: [],
-                  })
-                }
+                onClick={handleAddSemester}
               >
                 <PlusIcon className="h-4 w-4 mr-2" />
                 Agregar semestre

@@ -36,22 +36,24 @@ export const columns: ColumnDef<MallaCurricular>[] = [
     accessorKey: "promocion",
     header: ({ column }) => <SortToggler column={column} text="Promoción" />,
     cell: ({ row }) => (
-      <div className="text-right mr-4">{row.original.promocion}</div>
+      <div className="text-center">{row.original.promocion}</div>
     ),
-    size: 50,
   },
   {
     accessorKey: "anoInicio",
     header: ({ column }) => <SortToggler column={column} text="Año inicio" />,
+    cell: ({ row }) => (
+      <div className="text-center">{row.original.anoInicio}</div>
+    ),
   },
 
   {
     accessorKey: "estado",
     header: ({ column }) => <SortToggler column={column} text="Estado" />,
     cell: ({ row }) => (
-      <span>
+      <div className="text-center">
         {ESTADOS.find((item) => item.value === row.original.estado)?.label}
-      </span>
+      </div>
     ),
   },
   {
@@ -64,20 +66,5 @@ export const columns: ColumnDef<MallaCurricular>[] = [
       />
     ),
     size: 50,
-  },
-];
-
-export const semestreColumns: ColumnDef<MateriaSemestre>[] = [
-  {
-    accessorKey: "id",
-    header: "Id",
-  },
-  {
-    accessorKey: "codigo",
-    header: "Codigo",
-  },
-  {
-    accessorKey: "nombre",
-    header: "Nombre",
   },
 ];

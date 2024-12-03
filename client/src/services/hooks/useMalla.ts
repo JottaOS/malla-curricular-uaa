@@ -26,7 +26,6 @@ const useMalla = ({ id }: UseMallaProps) => {
       return;
     }
     const newMalla = convertirDTOAMalla(json.data);
-    console.log("new malla => ", newMalla);
     setMalla(newMalla);
     setLoading(false);
   }, [id]);
