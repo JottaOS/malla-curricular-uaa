@@ -40,9 +40,8 @@ export const columns: ColumnDef<MallaCurricular>[] = [
     ),
     size: 50,
   },
-  // TODO: Cambiar esto por año inicio
   {
-    accessorKey: "fechaInicio",
+    accessorKey: "anoInicio",
     header: ({ column }) => <SortToggler column={column} text="Año inicio" />,
   },
 

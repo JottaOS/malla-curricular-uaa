@@ -10,7 +10,11 @@ export const mallaCurricularSchema = z.object({
     .int()
     .min(1, "Debe ser igual o superior a 1")
     .max(1000, "Debe ser inferior o igual a 1000"),
-  fechaInicio: z.coerce.date().min(new Date("1900-01-01")).max(new Date()),
+  anoInicio: z
+    .number({ required_error: "El campo es requerido" })
+    .int()
+    .min(1900, "Debe ser igual o superior a 1900")
+    .max(2100, "Debe ser inferior o igual a 2100"),
   estado: ESTADO_SCHEMA,
   detalles: z
     .array(mallaCurricularDetalleSchema)

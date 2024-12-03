@@ -10,7 +10,7 @@ export class MallaCurricularRepository {
           mc.carrera_id as "carreraId",
           c.nombre as "carreraNombre",
           mc.promocion,
-          mc.fecha_inicio as "fechaInicio",
+          mc.ano_inicio as "anoInicio",
           mc.estado,
           COALESCE(
             JSON_AGG(
@@ -40,7 +40,7 @@ export class MallaCurricularRepository {
           mc.carrera_id as "carreraId",
           c.nombre as "carreraNombre",
           mc.promocion,
-          mc.fecha_inicio as "fechaInicio",
+          mc.ano_inicio as "anoInicio",
           mc.estado,
           COALESCE(
             JSON_AGG(
@@ -71,13 +71,13 @@ export class MallaCurricularRepository {
     // insertar cabecera
     const insertedCabecera = await query(
       `
-      INSERT INTO malla_curricular(carrera_id, promocion, fecha_inicio, estado)
+      INSERT INTO malla_curricular(carrera_id, promocion, ano_inicio, estado)
       VALUES($1, $2, $3, $4)
       RETURNING id AS "mallaCurricularId"`,
       [
         cabecera.carreraId,
         cabecera.promocion,
-        cabecera.fechaInicio,
+        cabecera.anoInicio,
         cabecera.estado,
       ]
     );
@@ -102,13 +102,13 @@ export class MallaCurricularRepository {
       UPDATE malla_curricular
       SET carrera_id = $1,
           promocion = $2,
-          fecha_inicio = $3,
+          ano_inicio = $3,
           estado = $4
       WHERE id = $5`,
       [
         cabecera.carreraId,
         cabecera.promocion,
-        cabecera.fechaInicio,
+        cabecera.anoInicio,
         cabecera.estado,
         id,
       ]

@@ -77,21 +77,37 @@ export const mallaCurricularSchema = z
 export type MallaCurricular = z.infer<typeof mallaCurricularSchema>;
 
 export interface MallaCurricularDTO extends Omit<MallaCurricular, "detalles"> {
-  detalles: { materiaId: number; anoLectivo: number; semestre: number }[];
+  detalles: {
+    materiaId: number;
+    anoLectivo: number;
+    semestre: number;
+    materiaNombre?: string;
+    materiaCodigo?: string;
+  }[];
 }
 
 export const convertirMallaADTO = (
   malla: MallaCurricular
 ): MallaCurricularDTO => {
+  // convertir a dto y recalcular valores correctos
   let semestreActual = 1;
+  let anoLectivoActual = malla.anoInicio;
+  let contadorSemestresPorAno = 0;
 
   const detallesDTO = malla.detalles.flatMap((detalle) => {
     const materias = detalle.materias.map((materia) => ({
       materiaId: materia.id,
-      anoLectivo: detalle.anoLectivo ?? 0,
+      anoLectivo: anoLectivoActual,
       semestre: semestreActual,
     }));
+
     semestreActual++;
+    contadorSemestresPorAno++;
+    if (contadorSemestresPorAno === 2) {
+      anoLectivoActual++;
+      contadorSemestresPorAno = 0;
+    }
+
     return materias;
   });
 
@@ -108,7 +124,8 @@ export const convertirDTOAMalla = (
 
   // Agrupamos los detalles por semestre
   dto.detalles.forEach((detalleDTO) => {
-    const { semestre, anoLectivo, materiaId } = detalleDTO;
+    const { semestre, anoLectivo, materiaId, materiaNombre, materiaCodigo } =
+      detalleDTO;
 
     if (!detallesMap.has(semestre)) {
       // Si no existe un detalle para este semestre, lo inicializamos
@@ -122,8 +139,8 @@ export const convertirDTOAMalla = (
     // Agregamos la materia al grupo correspondiente
     detallesMap.get(semestre)?.materias.push({
       id: materiaId,
-      nombre: undefined,
-      codigo: undefined,
+      nombre: materiaNombre,
+      codigo: materiaCodigo,
     });
   });
 
