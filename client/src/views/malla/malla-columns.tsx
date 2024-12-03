@@ -1,12 +1,10 @@
 import ActionColumn from "@/components/action-column";
 import SortToggler from "@/components/sort-toggler";
-import { Button } from "@/components/ui/button";
 import { ESTADOS } from "@/lib/constants";
 import { deleteMalla } from "@/services/actions/malla-actions";
 import { navigate } from "@/services/actions/navigate";
-import { MallaCurricular, MateriaSemestre } from "@/types/malla";
+import { MallaCurricular } from "@/types/malla";
 import { ColumnDef, Table } from "@tanstack/react-table";
-import { Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 
 const handleDelete = async (table: Table<any>, id: number) => {

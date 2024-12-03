@@ -97,3 +97,49 @@ CREATE TABLE carrera_acreditacion (
 COMMENT ON COLUMN carrera_acreditacion.carrera_id IS 'Identificador de la carrera asociada a la acreditación';
 COMMENT ON COLUMN carrera_acreditacion.acreditacion_id IS 'Identificador de la acreditación asociada a la carrera';
 
+
+-- mallas curriculares
+
+CREATE TABLE malla_curricular (
+    id SERIAL PRIMARY KEY,                  -- Identificador único de la malla curricular
+    carrera_id INT NOT NULL,                -- Relación con la tabla carrera
+    promocion INT NOT NULL,                 -- Número de promoción
+    ano_inicio INT NOT NULL,               -- Año de inicio de la malla curricular
+    estado VARCHAR(20) NOT NULL DEFAULT 'ACTIVO', -- Estado de la malla curricular (ACTIVO | INACTIVO)
+    CONSTRAINT fk_carrera 
+        FOREIGN KEY (carrera_id) 
+        REFERENCES carrera (id)             -- Relación con la tabla carrera
+);
+
+
+CREATE UNIQUE INDEX idx_unique_promocion_malla_curricular ON malla_curricular(carrera_id, promocion);
+
+COMMENT ON TABLE malla_curricular IS 'Tabla que define las mallas curriculares asociadas a las carreras';
+COMMENT ON COLUMN malla_curricular.carrera_id IS 'Relación con la carrera a la que pertenece la malla curricular';
+COMMENT ON COLUMN malla_curricular.promocion IS 'Número de promoción de la malla curricular';
+COMMENT ON COLUMN malla_curricular.ano_inicio IS 'Año de inicio para la malla curricular';
+COMMENT ON COLUMN malla_curricular.estado IS 'Estado de la malla curricular (ACTIVO | INACTIVO)';
+
+-- detalle de mallas curriculares
+CREATE TABLE malla_curricular_detalle (
+	malla_curricular_id INT NOT NULL,
+	materia_id INT NOT NULL,
+	ano_lectivo INT NOT NULL,
+	semestre INT NOT NULL,
+	CONSTRAINT fk_malla 
+        FOREIGN KEY (malla_curricular_id) 
+        REFERENCES malla_curricular (id),   -- Relación con la malla curricular
+    CONSTRAINT fk_materia 
+        FOREIGN KEY (materia_id) 
+        REFERENCES materia (id)  
+);
+
+
+CREATE UNIQUE INDEX idx_unique_detalle_malla_curricular ON malla_curricular_detalle(malla_curricular_id, materia_id);
+
+COMMENT ON TABLE malla_curricular_detalle IS 'Tabla que define el detalle de la malla curricular';
+COMMENT ON COLUMN malla_curricular_detalle.malla_curricular_id IS 'Relación con la malla curricular a la que pertenece el detalle';
+COMMENT ON COLUMN malla_curricular_detalle.materia_id IS 'Relación con la materia asociada a la malla';
+COMMENT ON COLUMN malla_curricular_detalle.ano_lectivo IS 'Año lectivo en el que se cursa';
+COMMENT ON COLUMN malla_curricular_detalle.semestre IS 'Semestre en el que se cursa la materia dentro de la malla';
+

@@ -21,16 +21,10 @@ export const mallaCurricularDetalleSchema = z
       .number()
       .int()
       .min(1, "Debe ser igual o superior a 1")
-      .max(20, "Debe ser inferior o igual a 20"),
+      .max(20, "Debe ser inferior o igual a 20")
+      .optional(),
   })
   .superRefine((data, ctx) => {
-    if (!data.anoLectivo) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "El campo es requerido",
-        path: ["anoLectivo"],
-      });
-    }
     if (!data.materias.length) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -61,7 +55,7 @@ export const mallaCurricularSchema = z
       .int()
       .min(1900, "Debe ser igual o superior a 1900")
       .max(2100, "Debe ser inferior o igual a 2100"),
-    estado: z.string().min(1, "El campo es requerido"),
+    estado: z.string({ required_error: "El campo es requerido" }),
     detalles: z.array(mallaCurricularDetalleSchema),
   })
   .superRefine((data, ctx) => {

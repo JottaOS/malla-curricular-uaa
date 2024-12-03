@@ -1,10 +1,4 @@
-import {
-  useForm,
-  FormProvider,
-  useFormContext,
-  useFieldArray,
-} from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useFormContext, useFieldArray } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,15 +6,8 @@ import {
   DialogFooter,
   DialogHeader,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { MateriaSemestre } from "@/types/malla";
-import { Materia, materiaSchema } from "@/types/materia";
+import { FormLabel } from "@/components/ui/form";
+import { Materia } from "@/types/materia";
 import Combobox from "@/components/combobox";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useState } from "react";

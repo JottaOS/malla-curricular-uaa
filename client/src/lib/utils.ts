@@ -21,15 +21,20 @@ export const downloadFile = (data: ArrayBuffer, filename: string) => {
 };
 
 export const generateExcelFile = <T>(data: T[]) => {
-  const preprocessData = data.map((item) =>
-    Object.fromEntries(
+  console.log(data);
+  const preprocessData = data.map((item) => {
+    console.log(item);
+    return Object.fromEntries(
       // @ts-expect-error Realmente no voy a pasar ni un dato que explote aca porque solo yo trabajo en esto. Buenas prácticas señores
-      Object.entries(item).map(([key, value]) => [
-        key,
-        typeof value === "object" ? formatObject(value) : value,
-      ])
-    )
-  );
+      // update 2024-03-12: si pasé un dato que rompe. genial
+      Object.entries(item).map(([key, value]) => {
+        // esto es lo peor que hice en mi carrera como programador, perdoname Maubet no te mereces esto
+        if (key === "detalles") return [key, null];
+
+        return [key, typeof value === "object" ? formatObject(value) : value];
+      })
+    );
+  });
 
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(preprocessData);

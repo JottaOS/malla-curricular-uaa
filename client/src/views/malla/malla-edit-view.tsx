@@ -11,7 +11,7 @@ import { Loader2 } from "lucide-react";
 
 const MallaEditView = ({ id }: { id: number }) => {
   const router = useRouter();
-  const { malla, loading, refetch } = useMalla({ id });
+  const { malla, loading } = useMalla({ id });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const onSubmit = async (
