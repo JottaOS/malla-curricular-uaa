@@ -1,9 +1,9 @@
 "use server";
 import { SERVER } from "@/lib/constants";
-import { CarreraRequestDTO } from "@/types/carrera";
+import { MallaCurricularDTO } from "@/types/malla";
 import { revalidatePath } from "next/cache";
 
-export const createMalla = async (malla: CarreraRequestDTO) => {
+export const createMalla = async (malla: MallaCurricularDTO) => {
   const response = await fetch(`${SERVER}/mallas-curriculares`, {
     body: JSON.stringify(malla),
     method: "POST",
@@ -16,7 +16,7 @@ export const createMalla = async (malla: CarreraRequestDTO) => {
   return json;
 };
 
-export const updateMalla = async (malla: CarreraRequestDTO) => {
+export const updateMalla = async (malla: MallaCurricularDTO) => {
   if (!malla.id) throw new Error("Id no proveído");
 
   const response = await fetch(`${SERVER}/mallas-curriculares/${malla.id}`, {

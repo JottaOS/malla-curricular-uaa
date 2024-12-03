@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as XLSX from "xlsx";
+import { ORDINAL_TEXT } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -45,4 +46,21 @@ const formatObject = (object: any) => {
   }
 
   return JSON.stringify(object);
+};
+
+/**
+ * Convierte un número a texto ordinal
+ *
+ * @param number número a convetir
+ * @returns un string que representa la versión ordinal del número
+ */
+export const toOrdinal = (number: number = 0): string => {
+  let ordinal = "";
+  const digits = number.toString().split("") as string[];
+  digits.forEach((digit, i) => {
+    const digit_ordinal = ORDINAL_TEXT[digits.length - i - 1][Number(digit)];
+    if (!digit_ordinal) return;
+    ordinal += digit_ordinal + " ";
+  });
+  return ordinal.trim();
 };

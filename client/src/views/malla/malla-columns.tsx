@@ -1,10 +1,12 @@
 import ActionColumn from "@/components/action-column";
 import SortToggler from "@/components/sort-toggler";
+import { Button } from "@/components/ui/button";
 import { ESTADOS } from "@/lib/constants";
 import { deleteMalla } from "@/services/actions/malla-actions";
 import { navigate } from "@/services/actions/navigate";
-import { MallaCurricular } from "@/types/malla";
+import { MallaCurricular, MateriaSemestre } from "@/types/malla";
 import { ColumnDef, Table } from "@tanstack/react-table";
+import { Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 
 const handleDelete = async (table: Table<any>, id: number) => {
@@ -42,7 +44,6 @@ export const columns: ColumnDef<MallaCurricular>[] = [
   {
     accessorKey: "fechaInicio",
     header: ({ column }) => <SortToggler column={column} text="Año inicio" />,
-    
   },
 
   {
@@ -64,5 +65,20 @@ export const columns: ColumnDef<MallaCurricular>[] = [
       />
     ),
     size: 50,
+  },
+];
+
+export const semestreColumns: ColumnDef<MateriaSemestre>[] = [
+  {
+    accessorKey: "id",
+    header: "Id",
+  },
+  {
+    accessorKey: "codigo",
+    header: "Codigo",
+  },
+  {
+    accessorKey: "nombre",
+    header: "Nombre",
   },
 ];
