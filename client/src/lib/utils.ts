@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import * as XLSX from "xlsx";
+import { ORDINAL_TEXT } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -20,15 +21,20 @@ export const downloadFile = (data: ArrayBuffer, filename: string) => {
 };
 
 export const generateExcelFile = <T>(data: T[]) => {
-  const preprocessData = data.map((item) =>
-    Object.fromEntries(
+  console.log(data);
+  const preprocessData = data.map((item) => {
+    console.log(item);
+    return Object.fromEntries(
       // @ts-expect-error Realmente no voy a pasar ni un dato que explote aca porque solo yo trabajo en esto. Buenas prácticas señores
-      Object.entries(item).map(([key, value]) => [
-        key,
-        typeof value === "object" ? formatObject(value) : value,
-      ])
-    )
-  );
+      // update 2024-03-12: si pasé un dato que rompe. genial
+      Object.entries(item).map(([key, value]) => {
+        // esto es lo peor que hice en mi carrera como programador, perdoname Maubet no te mereces esto
+        if (key === "detalles") return [key, null];
+
+        return [key, typeof value === "object" ? formatObject(value) : value];
+      })
+    );
+  });
 
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.json_to_sheet(preprocessData);
@@ -45,4 +51,21 @@ const formatObject = (object: any) => {
   }
 
   return JSON.stringify(object);
+};
+
+/**
+ * Convierte un número a texto ordinal
+ *
+ * @param number número a convetir
+ * @returns un string que representa la versión ordinal del número
+ */
+export const toOrdinal = (number: number = 0): string => {
+  let ordinal = "";
+  const digits = number.toString().split("") as string[];
+  digits.forEach((digit, i) => {
+    const digit_ordinal = ORDINAL_TEXT[digits.length - i - 1][Number(digit)];
+    if (!digit_ordinal) return;
+    ordinal += digit_ordinal + " ";
+  });
+  return ordinal.trim();
 };

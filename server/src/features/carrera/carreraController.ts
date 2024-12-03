@@ -65,7 +65,7 @@ export class CarreraController {
       // validar el payload
       const parsedCarrera = carreraSchema.parse(req.body);
 
-      // verificar que exista la Materia
+      // verificar que exista la Carrera
       const carrera = await CarreraRepository.getById(id);
       if (!carrera.length) {
         sendNotFoundResponse(res, "Carrera no encontrada");
