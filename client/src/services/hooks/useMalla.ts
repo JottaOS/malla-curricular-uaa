@@ -1,5 +1,5 @@
 import { SERVER } from "@/lib/constants";
-import { MallaCurricular } from "@/types/malla";
+import { convertirDTOAMalla, MallaCurricular } from "@/types/malla";
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 
@@ -25,7 +25,9 @@ const useMalla = ({ id }: UseMallaProps) => {
       setLoading(false);
       return;
     }
-    setMalla(json.data);
+    const newMalla = convertirDTOAMalla(json.data);
+    console.log("new malla => ", newMalla);
+    setMalla(newMalla);
     setLoading(false);
   }, [id]);
 

@@ -8,9 +8,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import React, { useMemo, useState } from "react";
+import {
+  FormProvider,
+  useFieldArray,
+  useForm,
+  useWatch,
+} from "react-hook-form";
 import Combobox from "@/components/combobox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { Button } from "@/components/ui/button";
 
@@ -35,6 +47,7 @@ import { semestreColumns } from "./malla-columns";
 import { SemestreTable } from "./semestre-table";
 import MateriaDialog from "./materia-dialog";
 import { Materia } from "@/types/materia";
+import { ESTADOS } from "@/lib/constants";
 
 export interface MallaFormProps {
   defaultValues?: MallaCurricular;
@@ -64,13 +77,16 @@ const MallaForm = ({
     formState: { errors },
   } = form;
 
+  const watchedForm = form.watch();
   const watchedCarreraId = form.watch("carreraId");
+  const watchedDetalles = useWatch({
+    control: form.control,
+    name: "detalles",
+    defaultValue: [],
+  });
 
-  const {
-    fields: detalles,
-    append: addDetalle,
-    remove: removeDetalle,
-  } = useFieldArray({
+  console.log("form => ", watchedForm);
+  const { append: addDetalle, remove: removeDetalle } = useFieldArray({
     control: form.control,
     name: "detalles",
   });
@@ -92,7 +108,7 @@ const MallaForm = ({
   const calculateAvailableMaterias = () => {
     return (
       allMaterias?.filter((materia) => {
-        const materiaAlreadyUsed = detalles?.some(
+        const materiaAlreadyUsed = watchedDetalles?.some(
           ({ materias: usedMaterias }) =>
             usedMaterias.some((used) => used.id === materia.id)
         );
@@ -117,7 +133,6 @@ const MallaForm = ({
 
   const availableMaterias = calculateAvailableMaterias();
 
-  console.log("detalles fields => ", detalles);
   return (
     <div className="grid gap-8 w-full">
       <FormProvider {...form}>
@@ -126,9 +141,11 @@ const MallaForm = ({
           className="grid gap-4"
           id="form"
         >
-          <button type="button" onClick={() => form.reset()} className="mb-8">
-            test reset
-          </button>
+          {Object.entries(errors).map(([key, value]) => (
+            <div>
+              Key: {key} error: {JSON.stringify(value)}
+            </div>
+          ))}
           <div className="flex items-center gap-4 md:flex-row flex-col">
             <FormField
               control={form.control}
@@ -185,6 +202,30 @@ const MallaForm = ({
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="estado"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Estado</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecciona un estado" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {ESTADOS.map(({ value, label }) => (
+                          <SelectItem key={value} value={value}>
+                            {label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           {/* detalle */}
@@ -193,7 +234,7 @@ const MallaForm = ({
               <CardTitle>Semestres</CardTitle>
             </CardHeader>
             <CardContent>
-              {detalles.map((item, index) => (
+              {watchedDetalles.map((item, index) => (
                 <Card key={crypto.randomUUID()} className="mb-4">
                   <CardHeader className="flex items-center flex-row justify-between">
                     <CardTitle className="font-semibold text-lg">
@@ -228,8 +269,10 @@ const MallaForm = ({
                 className="border-primary text-primary hover:text-primary"
                 onClick={() =>
                   addDetalle({
-                    semestre: detalles.length + 1,
-                    anoLectivo: undefined,
+                    semestre: watchedDetalles.length + 1,
+                    anoLectivo:
+                      form.getValues("anoInicio") +
+                      Math.floor(watchedDetalles.length / 2),
                     materias: [],
                   })
                 }

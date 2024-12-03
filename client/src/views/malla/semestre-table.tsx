@@ -58,8 +58,6 @@ export function SemestreTable<TData, TValue>({
   index,
   options,
 }: SemestreTableProps<TData, TValue>) {
-  const form = useFormContext();
-
   const table = useReactTable({
     data,
     columns,

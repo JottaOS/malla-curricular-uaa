@@ -80,7 +80,9 @@ export interface MallaCurricularDTO extends Omit<MallaCurricular, "detalles"> {
   detalles: { materiaId: number; anoLectivo: number; semestre: number }[];
 }
 
-export const convertirMallaADTO = (malla: MallaCurricular): MallaCurricularDTO => {
+export const convertirMallaADTO = (
+  malla: MallaCurricular
+): MallaCurricularDTO => {
   let semestreActual = 1;
 
   const detallesDTO = malla.detalles.flatMap((detalle) => {
@@ -96,5 +98,44 @@ export const convertirMallaADTO = (malla: MallaCurricular): MallaCurricularDTO =
   return {
     ...malla,
     detalles: detallesDTO,
+  };
+};
+
+export const convertirDTOAMalla = (
+  dto: MallaCurricularDTO
+): MallaCurricular => {
+  const detallesMap = new Map<number, MallaCurricularDetalle>();
+
+  // Agrupamos los detalles por semestre
+  dto.detalles.forEach((detalleDTO) => {
+    const { semestre, anoLectivo, materiaId } = detalleDTO;
+
+    if (!detallesMap.has(semestre)) {
+      // Si no existe un detalle para este semestre, lo inicializamos
+      detallesMap.set(semestre, {
+        materias: [],
+        anoLectivo,
+        semestre,
+      });
+    }
+
+    // Agregamos la materia al grupo correspondiente
+    detallesMap.get(semestre)?.materias.push({
+      id: materiaId,
+      nombre: undefined,
+      codigo: undefined,
+    });
+  });
+
+  // Construimos el array de detalles a partir del mapa
+  const detalles = Array.from(detallesMap.values());
+
+  return {
+    id: dto.id,
+    carreraId: dto.carreraId,
+    promocion: dto.promocion,
+    anoInicio: dto.anoInicio,
+    estado: dto.estado,
+    detalles,
   };
 };
